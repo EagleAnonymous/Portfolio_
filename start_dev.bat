@@ -1,0 +1,3 @@
+@echo off
+echo Starting Portfolio Frontend and Backend...
+npm run dev
