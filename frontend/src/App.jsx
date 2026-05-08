@@ -131,22 +131,27 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // 1. Validate that keys are actually loaded from environment variables
+    if (!SERVICE_ID || !TEMPLATE_ID || !PUBLIC_KEY) {
+      console.error("EmailJS Error: Configuration keys are missing! Check your .env file in the frontend folder.");
+      setSendStatus('error');
+      return;
+    }
+
     setIsSending(true);
     setSendStatus(null);
     const nameToSubmit = formData.user_name;
 
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY)
       .then((result) => {
-        console.log('Email successfully sent!', result.text);
-        console.log('Sender was:', nameToSubmit);
+        console.log('SUCCESS!', result.status, result.text);
         setSendStatus('success');
         setSubmittedName(nameToSubmit);
         setFormData({ user_name: '', user_email: '', message: '' }); // Clear form
       }, (error) => {
-        // Improved logging to help you debug the exact cause
-        console.error('EmailJS Error Object:', error);
-        console.error('Error Status Code:', error.status);
-        console.error('Error Text:', error.text);
+        // 2. Enhanced error logging for debugging
+        console.error('FAILED...', error);
         setSendStatus('error');
       })
       .finally(() => {
