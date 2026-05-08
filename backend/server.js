@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: 'https://devrry.vercel.app', 
+  origin: ['https://devrry.vercel.app', 'http://localhost:3000'], 
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true
 }));
@@ -21,6 +21,20 @@ app.get('/', (req, res) => {
 
 app.get('/api/hello', (req, res) => {
   res.json({ message: "Hello from the Node.js backend!" });
+});
+
+// Contact Form Endpoint
+app.post('/api/contact', (req, res) => {
+  const { name, email, message } = req.body;
+
+  if (!name || !email || !message) {
+    return res.status(400).json({ error: "All fields are required" });
+  }
+
+  console.log(`New Message from ${name} (${email}): ${message}`);
+  
+  // Here you would normally add logic to send an email or save to a database
+  res.status(200).json({ message: "Message received successfully!" });
 });
 
 // 404 Handler for undefined routes
