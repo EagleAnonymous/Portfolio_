@@ -78,7 +78,7 @@ function App() {
   useEffect(() => {
     const checkStatus = () => {
       // Use environment variables for API endpoints in real scenarios
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://portfolio-puvo.onrender.com';
       fetch(`${API_URL}/api/hello`)
         .then(res => setBackendStatus(res.ok ? 'online' : 'offline'))
         .catch(() => setBackendStatus('offline'));
