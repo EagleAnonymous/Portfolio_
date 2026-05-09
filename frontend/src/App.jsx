@@ -161,53 +161,73 @@ function App() {
       });
   };
   return (
-    <div className="h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth app-background">
-      <nav className="fixed top-6 right-10 z-50 flex flex-col items-end">
-        {/* Menu Icon Toggle */}
+    <div className="h-screen overflow-y-auto snap-y snap-mandatory scroll-smooth app-background no-scrollbar">
+      <style>{`
+        /* Professional way to hide scrollbars globally while maintaining scrolling functionality */
+        ::-webkit-scrollbar { display: none !important; }
+        * { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+      `}</style>
+
+      <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 md:px-12 py-2 bg-slate-950/50 border-b border-white/10 backdrop-blur-xl transition-all duration-300">
+        <div className="flex items-center pl-4">
+          <img src="/text.png" alt="Dev/Rry Logo" className="h-10 md:h-14 w-auto object-contain mix-blend-multiply brightness-150 contrast-150 scale-125 origin-left transition-all duration-300 hover:scale-130 drop-shadow-[0_0_12px_rgba(74,222,128,0.25)]" />
+        </div>
+
+        {/* Desktop Navbar - Highly visible horizontal layout */}
+        <ul className="hidden md:flex items-center gap-2">
+          <li><a href="#home" className={`nav-link ${currentPanel === 'home' ? 'active' : ''}`}>Home</a></li>
+          <li><a href="#about" className={`nav-link ${currentPanel === 'about' ? 'active' : ''}`}>About</a></li>
+          <li><a href="#stack" className={`nav-link ${currentPanel === 'stack' ? 'active' : ''}`}>Stack</a></li>
+          <li><a href="#project" className={`nav-link ${currentPanel === 'project' ? 'active' : ''}`}>Projects</a></li>
+          <li><a href="#contact" className={`nav-link ${currentPanel === 'contact' ? 'active' : ''}`}>Contact</a></li>
+        </ul>
+
+        {/* Hamburger Menu Toggle (Mobile Only) */}
         <button 
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className={`p-4 rounded-full glass-panel text-white transition-all active:scale-90 shadow-lg menu-button-glow z-50`}
+          className="md:hidden relative text-white transition-all active:scale-90 z-50 focus:outline-none"
           aria-label="Toggle menu"
-          style={{ position: 'relative', width: '56px', height: '56px' }}
         >
-          <div className="relative w-6 h-4 flex flex-col justify-between items-center mx-auto">
+          <div className="relative w-6 h-4 flex flex-col justify-between items-center">
             <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-[7px]' : ''}`}></span>
             <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${isMenuOpen ? 'opacity-0' : 'opacity-100'}`}></span>
             <span className={`block h-0.5 w-6 bg-white transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-[7px]' : ''}`}></span>
           </div>
         </button>
 
-        {/* Dropdown Links */}
+        {/* Mobile Dropdown Menu */}
         {isMenuOpen && (
-          <ul className="mt-4 flex flex-col space-y-1 p-2 shadow-2xl glass-panel-dark animate-in fade-in zoom-in-95 duration-300 min-w-[180px]">
-            <li><a href="#home" className={`nav-link ${currentPanel === 'home' ? 'active' : ''}`}>Home</a></li>
-            <li><a href="#about" className={`nav-link ${currentPanel === 'about' ? 'active' : ''}`}>About</a></li>
-            <li><a href="#stack" className={`nav-link ${currentPanel === 'stack' ? 'active' : ''}`}>Stack</a></li>
-            <li><a href="#project" className={`nav-link ${currentPanel === 'project' ? 'active' : ''}`}>Projects</a></li>
-            <li><a href="#contact" className={`nav-link ${currentPanel === 'contact' ? 'active' : ''}`}>Contact</a></li>
-          </ul>
+          <div className="absolute top-[100%] left-0 w-full p-4 md:hidden animate-in slide-in-from-top-4 duration-300">
+            <ul className="flex flex-col space-y-1 p-2 shadow-2xl glass-panel-dark rounded-2xl overflow-hidden">
+              <li><a href="#home" onClick={() => setIsMenuOpen(false)} className={`nav-link w-full text-center py-4 ${currentPanel === 'home' ? 'active' : ''}`}>Home</a></li>
+              <li><a href="#about" onClick={() => setIsMenuOpen(false)} className={`nav-link w-full text-center py-4 ${currentPanel === 'about' ? 'active' : ''}`}>About</a></li>
+              <li><a href="#stack" onClick={() => setIsMenuOpen(false)} className={`nav-link w-full text-center py-4 ${currentPanel === 'stack' ? 'active' : ''}`}>Stack</a></li>
+              <li><a href="#project" onClick={() => setIsMenuOpen(false)} className={`nav-link w-full text-center py-4 ${currentPanel === 'project' ? 'active' : ''}`}>Projects</a></li>
+              <li><a href="#contact" onClick={() => setIsMenuOpen(false)} className={`nav-link w-full text-center py-4 ${currentPanel === 'contact' ? 'active' : ''}`}>Contact</a></li>
+            </ul>
+          </div>
         )}
       </nav>
 
       {/* Single Page Sections */}
       <section id="home" className="min-h-screen w-full flex items-center justify-center snap-start px-4 sm:px-10">
-        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-12 max-w-6xl z-0 animate-in fade-in duration-700">
+        <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 max-w-6xl w-full z-0 animate-in fade-in duration-700 py-12 sm:py-20 md:py-0">
           {/* Left side: Picture & Info */}
-          <div className="flex-1 w-full flex flex-col items-center gap-6">
+          <div className="flex-none md:flex-1 w-full flex flex-col items-center gap-6 mb-8 md:mb-0">
             <div className="relative inline-block">
               <img 
                 src={homeImage} 
                 alt="Feature" 
-                className="pfp object-cover"
+                className="pfp object-cover w-40 h-40 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 shadow-2xl"
               />
               {/* Active Status Indicator (Messenger Style) */}
               <div 
-                className={`absolute bottom-[8%] right-[15%] w-11 h-11 md:w-9 md:h-9 rounded-full border-2 border-white shadow-xl transition-all duration-500 ${
+                className={`absolute bottom-[5%] right-[5%] w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full border-4 border-slate-900 shadow-xl transition-all duration-500 ${
                   backendStatus === 'online' ? 'bg-green-500' : 
                   backendStatus === 'offline' ? 'bg-red-500' : 
                   'bg-amber-500 animate-pulse'
                 }`}
-                title={`System status: ${backendStatus}`}
+                title={`Devrry is : ${backendStatus}`}
               >
                 {backendStatus === 'online' && (
                   <span className="absolute inset-0 rounded-full bg-green-500 animate-ping opacity-75"></span>
@@ -229,19 +249,19 @@ function App() {
           </div>
           
           {/* Right side: Description */}
-          <div className="flex-1 text-left glass-panel p-6 md:p-10">
-            <h1 className="text-3xl md:text-5xl mb-4 md:mb-6 typing-effect">Hello! I'm Dev/rry.</h1>
+          <div className="flex-1 w-full text-center md:text-left glass-panel p-6 sm:p-8 md:p-10 lg:p-12 transition-all duration-500">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl mb-4 md:mb-6 font-black tracking-tight typing-effect leading-tight">Hello! I'm Dev/rry.</h1>
             
-            <p className="text-base md:text-xl leading-relaxed mb-6 md:mb-8">
+            <p className="text-sm sm:text-base md:text-lg text-slate-300 leading-relaxed mb-6 md:mb-8 max-w-2xl mx-auto md:mx-0">
              Passionate Full Stack Developer | Aspiring Software Engineer
               Currently refining my craft in the world of Information Technology,
                I am driven by the constant evolution of web technologies. 
                From architecting RESTful APIs to designing intuitive user interfaces, 
                I am committed to mastering the full lifecycle of software development. 
-               I don't just write code; I build digital experiences that are fast, 
+               I don't just write code; I build digital experiences that are fast,
                secure, and built to scale.
             </p>
-            <div className="flex justify-center gap-12 mt-6">
+            <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-8 md:gap-12 mt-6">
               <div onClick={handleDownload} className="download-cv group cursor-pointer">
                 <img src={downloadIcon} alt="Download Icon" className="download-icon" />
                 <span className="download-text">Download CV</span>
